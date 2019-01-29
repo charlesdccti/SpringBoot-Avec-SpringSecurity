@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -23,6 +22,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception{
 		http.csrf().disable().authorizeRequests()
 		.antMatchers(HttpMethod.GET, "/").permitAll()
+		.antMatchers(HttpMethod.GET, "/cadastrarEvento").hasRole("ADMIN")
+		.antMatchers(HttpMethod.POST, "/cadastrarEvento").hasRole("ADMIN")
 		.anyRequest().authenticated()
 		.and().formLogin().permitAll()
 		.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
